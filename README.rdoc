@@ -1,19 +1,14 @@
 
 Среда разработки:
 ruby 2.1.0p0 (2013-12-25 revision 44422) [x86_64-linux]
-
 Rails 4.2.2
 
 
 Для запуска проекта:
 bundle
-
 rake db:migrate
-
 rake db:seed
 
 
-
 пользователь по умолчанию: user@test.ru
-
 пароль:                    qw
