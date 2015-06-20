@@ -1,0 +1,40 @@
+<%= form_for @variety do |v| %>
+  <div class="modal-header">
+    <% if @variety.errors.any? %>
+      <div class="alert alert-error">
+        <h3>Ошибки при сохранении сорта продукта</h3>
+        <ul>
+          <% for message in @variety.errors.full_messages %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  </div>
+  <div class="modal-body">
+    <table class="table table-striped">
+      <tr class="success">
+        <td>
+          Тип
+        </td>
+        <td>
+          <%= v.select :type_id, options_from_collection_for_select(@types, :id, :name, @variety.type_id), include_blank: false %>
+        </td>
+      </tr>
+      <tr class="success">
+        <td>
+          Имя
+        </td>
+        <td>
+          <%= v.text_field :name %>
+        </td>
+      </tr>
+    </table>
+    <div class="modal-footer">
+      <%= v.submit "Сохранить сорт продукта"%>
+    </div>
+  </div>
+
+<%end%>
+
+

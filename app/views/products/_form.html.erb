@@ -1,0 +1,86 @@
+<%= form_for @product do |p| %>
+  <div class="modal-header">
+    <% if @product.errors.any? %>
+      <div class="alert alert-error">
+        <h3>Ошибки при сохранении продукта</h3>
+        <ul>
+          <% for message in @product.errors.full_messages %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  </div>
+  <div class="modal-body">
+    <table class="table table-striped">
+      <tr class="success">
+        <td>
+          Активирован
+        </td>
+        <td>
+          <%= p.check_box :active %>
+        </td>
+      </tr>
+      <tr class="success">
+        <td>
+          Тип
+        </td>
+        <td>
+          <% if @product.variety.nil? %>
+            <%= select_tag :variable, options_from_collection_for_select(Type.all, :id, :name), :onchange => 'select_rebuild(this.options[this.selectedIndex].value)' %>
+          <% else %>
+            <%= select_tag :variable, options_from_collection_for_select(Type.all, :id, :name, @product.variety.type_id), :onchange => 'select_rebuild(this.options[this.selectedIndex].value)' %>
+          <% end %>
+        </td>
+      </tr>
+      <tr class="success">
+        <td>
+          Сорт
+        </td>
+        <td>
+          <%= p.select :variety_id, options_from_collection_for_select(@varieties_first, :id, :name, @product.variety_id), include_blank: false %>
+        </td>
+      </tr>
+      <tr class="success">
+        <td>
+          Имя
+        </td>
+        <td>
+          <%= p.text_field :name %>
+        </td>
+      </tr>
+      <tr class="success">
+        <td>
+          Цена
+        </td>
+        <td>
+          <%= p.text_field :price %>
+        </td>
+      </tr>
+    </table>
+    <div class="modal-footer">
+      <%= p.submit "Сохранить продукт"%>
+    </div>
+  </div>
+<%end%>
+
+<script>
+
+  function select_rebuild(b) {
+    switch (b) {
+      <% @types.each do |t| %>
+      case '<%= t.id %>':
+        with (document.getElementById('product_variety_id')) {
+          options.length = 0;
+          <% z = 0 %>
+          <% @varieties.where('type_id = ?', t.id).each do |v| %>
+            options[<%= z %>] = new Option('<%= v.name %>', '<%= v.id %>');
+            <% z += 1 %>
+          <% end %>
+          selectedIndex = 0;
+        }
+        break;
+      <% end %>
+    }
+  }
+</script>

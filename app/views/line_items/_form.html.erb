@@ -1,0 +1,38 @@
+<%= form_for @line_item do |f| %>
+  <% if @line_item.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@line_item.errors.count, "error") %> prohibited this line_item from being saved:</h2>
+
+      <ul>
+      <% @line_item.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+  <table class="table table-striped">
+    <tr class="success">
+      <td>
+        Продукт
+      </td>
+      <td>
+        <%= @line_item.product.name %>
+      </td>
+    </tr>
+    <tr class="success">
+      <td>
+        Колличество
+      </td>
+      <td>
+        <%= f.number_field :amount %>
+      </td>
+    </tr>
+  </table>
+
+  <div class="modal-footer">
+    <%= f.submit "Сохранить"%> |
+    <%= link_to 'Назад', line_items_path %>
+  </div>
+<% end %>

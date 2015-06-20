@@ -1,0 +1,65 @@
+
+<nav class="navbar navbar-default" role="navigation">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"> <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button> <a class="navbar-brand" href="/">Тестовой задание</a>
+  </div>
+
+  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <ul class="nav navbar-nav">
+      <% if current_user %>
+        <li class="<% if controller_name == 'discounts' %>active<% end %>">
+          <%= link_to "Скидки", discounts_path %>
+        </li>
+        <li class="<% if controller_name == 'types' %>active<% end %>">
+          <%= link_to "Типы продуктов", types_path %>
+        </li>
+        <li class="<% if controller_name == 'varieties' %>active<% end %>">
+          <%= link_to "Сорт продукта", varieties_path %>
+        </li>
+        <li class="<% if controller_name == 'products' %>active<% end %>">
+          <%= link_to "Продукты", products_path %>
+        </li>
+      <% else %>
+        <li class="<% if controller_name == 'varieties' %>active<% end %>">
+          <%= link_to "В корзине   "+cart_total_amount.to_s+" товаров", line_items_path %>
+        </li>
+      <% end %>
+    </ul>
+
+    <ul class="nav navbar-nav navbar-right">
+      <% if current_user %>
+        <% case controller_name %>
+        <% when 'discounts' %>
+          <li><%= link_to 'Новая скидка', new_discount_path %></li>
+        <% when 'types' %>
+          <li><%= link_to 'Новый тип продукта', new_type_path %></li>
+        <% when 'varieties' %>
+          <li><%= link_to 'Новый сорт продукта', new_variety_path %></li>
+        <% when 'products' %>
+          <li><%= link_to 'Новый продукт', new_product_path %></li>
+        <% end %>
+      <% end %>
+      <li class="dropdown">
+        <% if current_user %>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= current_user.name %><strong class="caret"></strong></a>
+          <ul class="dropdown-menu">
+            <li>
+              <%= link_to "Выйти", "logout" %>
+            </li>
+          </ul>
+        <% else %>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Войти<strong class="caret"></strong></a>
+          <ul class="dropdown-menu">
+            <li>
+              <%= link_to "Войти", new_session_path %>
+            </li>
+            <li>
+              <%= link_to "Зарегестрироваться", new_user_path %>
+            </li>
+          </ul>
+        <% end %>
+      </li>
+    </ul>
+  </div>
+
+</nav>

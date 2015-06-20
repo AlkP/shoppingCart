@@ -1,0 +1,31 @@
+<% if @variety.errors.any? %>
+  <div class="alert alert-error">
+    <h3>Ошибки при сохранении сорта продукта</h3>
+    <ul>
+      <% for message in @variety.errors.full_messages %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% elsif flash[:notice] %>
+  <div class="alert alert-error">
+    <li><%= flash[:notice] %></li>
+  </div>
+<% end %>
+
+
+<table class="table table-striped">
+  <% @varieties.each do |v| %>
+    <tr class="info">
+      <td>
+        <%= link_to v.name, variety_url(v) %>
+      </td>
+      <td>
+        <%= v.type.name %>
+      </td>
+      <td>
+        <%= link_to 'Удалить', variety_url(v), method: 'delete', :'data-confirm' => 'Действительно удалить?', rel: 'nofollow' %>
+      </td>
+    </tr>
+  <% end %>
+</table>

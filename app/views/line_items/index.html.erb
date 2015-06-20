@@ -1,0 +1,69 @@
+<p id="notice"><%= notice %></p>
+
+<div class="row clearfix">
+  <div class="col-md-2 column">
+  </div>
+  <div class="col-md-8 column">
+    <h3 class="text-center text-info">
+      Корзинка
+    </h3>
+    <table class="table table-striped">
+      <tr class="warning">
+        <th>
+          Наименование
+        </th>
+        <th>
+          Колличество
+        </th>
+        <th>
+          Цена за единицу
+        </th>
+        <th>
+          Цена общая
+        </th>
+        <th>
+          Цена со скидкой
+        </th>
+        <th>
+        </th>
+      </tr>
+      <% @line_items.each do |line_item| %>
+        <tr class="info">
+          <td>
+            <b><%= link_to line_item.product.name, line_item_url(line_item) %></b>
+          </td>
+          <td>
+            <%= line_item.amount %>
+          </td>
+          <td>
+            <%= line_item.product.price %>
+          </td>
+          <td>
+            <%= line_item.product.price * line_item.amount %>
+          </td>
+          <td>
+            <%= cart_price(line_item.id) %>
+          </td>
+          <td>
+            <%= link_to 'Удалить', line_item_url(line_item), method: 'delete', :'data-confirm' => 'Действительно удалить?', rel: 'nofollow' %>
+          </td>
+        </tr>
+      <% end %>
+      <tr class="info">
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><b>Итого</b></td>
+        <td>
+          <%= cart_total_price %>
+        </td>
+        <td></td>
+      </tr>
+    </table>
+  </div>
+  <div class="col-md-2 column">
+  </div>
+</div>
+
+
+

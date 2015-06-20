@@ -1,0 +1,31 @@
+
+<% if @type.errors.any? %>
+  <div class="alert alert-error">
+    <h3>Ошибки при сохранении типа продукта</h3>
+    <ul>
+      <% for message in @type.errors.full_messages %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% elsif flash[:notice] %>
+  <div class="alert alert-error">
+    <li><%= flash[:notice] %></li>
+  </div>
+<% end %>
+
+
+<table class="table table-striped">
+  <% @types.each do |t| %>
+    <tr class="info">
+      <td>
+        <%= link_to t.name, type_url(t) %>
+      </td>
+      <td>
+        <%= link_to 'Удалить', type_url(t), method: 'delete', :'data-confirm' => 'Действительно удалить?', rel: 'nofollow' %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+
+

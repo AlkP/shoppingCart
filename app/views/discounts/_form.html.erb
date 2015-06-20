@@ -1,0 +1,139 @@
+<%= form_for @discount do |d| %>
+  <div class="modal-header">
+    <% if @discount.errors.any? %>
+      <div class="alert alert-error">
+        <h3>Ошибки при сохранении скидки</h3>
+        <ul>
+          <% for message in @discount.errors.full_messages %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  </div>
+  <div class="modal-body">
+    <table class="table table-striped">
+      <tr class="success">
+        <td>
+          Имя
+        </td>
+        <td>
+          <%= d.text_field :name %>
+        </td>
+      </tr>
+      <tr class="success">
+        <td>
+          период действия
+        </td>
+        <td>
+          ОТ&nbsp;&nbsp;&nbsp;<%= d.date_select :date_start %>&nbsp;&nbsp;&nbsp;ДО&nbsp;&nbsp;&nbsp;<%= d.date_select :date_end %>
+        </td>
+      </tr>
+      <tr class="success">
+        <td>
+          От скольки начинает действовать
+        </td>
+        <td>
+          <%= d.number_field :amount, value: 2 %>
+        </td>
+      </tr>
+      <tr class="success">
+        <td>
+          Размер скидки
+        </td>
+        <td>
+          <%= d.number_field :discount %> <%= select_tag(:'discount[percent]', options_for_select([['р.', 0], ['%', 1]], @discount.percent)) %>
+        </td>
+      </tr>
+      <tr class="success">
+        <td>
+          На что предоставляется скидка
+        </td>
+        <td>
+          <%= select_tag(:'discount[specification]', options_for_select([['На данную позицию в чеке', 0], ['на весь чек', 1]], @discount.specification)) %>
+        </td>
+      </tr>
+      <tr class="info">
+        <td>
+          Тип
+        </td>
+        <td>
+          <!--< %= d.select :type_id, options_from_collection_for_select(@types, :id, :name, @discount.type_id), include_blank: false, :onchange => 'select_variety_rebuild(this.options[this.selectedIndex].value)' %>-->
+          <%= select_tag :'discount[type_id]', options_from_collection_for_select(@types, :id, :name, @discount.type_id), include_blank: false, :onchange => 'select_variety_rebuild(this.options[this.selectedIndex].value)' %>
+        </td>
+      </tr>
+      <tr class="info">
+        <td>
+          Сорт
+        </td>
+        <td>
+          <!--< %= d.select :variety_id, options_from_collection_for_select(@varieties_first, :id, :name, @discount.variety_id), include_blank: true %>-->
+          <%= select_tag :'discount[variety_id]', options_from_collection_for_select(@varieties_first, :id, :name, @discount.variety_id), include_blank: true, :onchange => 'select_product_rebuild(this.options[this.selectedIndex].value)' %>
+        </td>
+      </tr>
+      <tr class="info">
+        <td>
+          Продукт
+        </td>
+        <td>
+          <% if @discount.product.nil? %>
+            <% if @discount.variety.nil?%>
+              <%= d.select :product_id, options_from_collection_for_select(Product.where('id = 0'), :id, :name), include_blank: true %>
+        <% else %>
+              <%= d.select :product_id, options_from_collection_for_select(@products_first, :id, :name), include_blank: true %>
+        <% end %>
+            <% else %>
+            <%= d.select :product_id, options_from_collection_for_select(@products_first, :id, :name, @discount.product_id), include_blank: true %>
+          <% end %>
+        </td  >
+      </tr>
+    </table>
+    <div class="modal-footer">
+      <%= d.submit "Сохранить скидку"%>
+    </div>
+  </div>
+<%end%>
+
+<script>
+
+  function select_variety_rebuild(b) {
+    switch (b) {
+      <% @types.each do |t| %>
+      case '<%= t.id %>':
+        with (document.getElementById('discount_variety_id')) {
+          options.length = 0;
+          <% z = 0 %>
+          options[<%= z %>] = new Option('', '');
+          <% z += 1 %>
+          <% @varieties.where('type_id = ?', t.id).each do |v| %>
+          options[<%= z %>] = new Option('<%= v.name %>', '<%= v.id %>');
+          <% z += 1 %>
+          <% end %>
+          selectedIndex = 0;
+        }
+        break;
+      <% end %>
+    }
+    document.getElementById('discount_product_id').options.length = 0;
+  }
+
+  function select_product_rebuild(b) {
+    switch (b) {
+      <% @varieties.each do |v| %>
+      case '<%= v.id %>':
+        with (document.getElementById('discount_product_id')) {
+          options.length = 0;
+          <% z = 0 %>
+          options[<%= z %>] = new Option('', '');
+          <% z += 1 %>
+          <% @products.where('variety_id = ?', v.id).each do |p| %>
+            options[<%= z %>] = new Option('<%= p.name %>', '<%= p.id %>');
+          <% z += 1 %>
+          <% end %>
+          selectedIndex = 0;
+        }
+        break;
+      <% end %>
+    }
+  }
+</script>

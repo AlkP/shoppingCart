@@ -1,0 +1,34 @@
+<table class="table table-striped">
+  <% @discounts.each do |d| %>
+    <tr class="info">
+      <td>
+        <%= link_to d.name, discount_url(d) %>
+      </td>
+      <td>
+        <%= d.type.name %>
+      </td>
+      <td>
+        <% unless d.variety.nil?  %>
+          <%= d.variety.name %>
+        <% end %>
+      </td>
+      <td>
+        <% unless d.product.nil?  %>
+          <%= d.product.name %>
+        <% end %>
+      </td>
+      <td>
+        <% if d.specification == 0 %>На данную позицию<% else %>на весь чек<% end %>
+      </td>
+      <td>
+        от <%= d.amount %>
+      </td>
+      <td>
+        <%= d.discount %> <% if d.percent == 0 %>р.<% else %>%<% end %>
+      </td>
+      <td>
+        <%= link_to 'Удалить', discount_url(d), method: 'delete', :'data-confirm' => 'Действительно удалить?', rel: 'nofollow' %>
+      </td>
+    </tr>
+  <% end %>
+</table>

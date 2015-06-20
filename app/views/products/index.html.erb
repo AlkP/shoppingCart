@@ -1,0 +1,66 @@
+<% if current_user %>
+  <!--Часть представления для залогиненного пользователя-->
+  <% if @product.errors.any? %>
+    <div class="alert alert-error">
+      <h3>Ошибки при сохранении продукта</h3>
+      <ul>
+        <% for message in @product.errors.full_messages %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% elsif flash[:notice] %>
+    <div class="alert alert-error">
+      <li><%= flash[:notice] %></li>
+    </div>
+  <% end %>
+
+
+  <table class="table table-striped">
+    <% @products.each do |p| %>
+      <tr class="info">
+        <td>
+          <%= link_to p.name, product_url(p) %>
+        </td>
+        <td>
+          <%= p.active %>
+        </td>
+        <td>
+          <%= p.variety.type.name %>
+        </td>
+        <td>
+          <%= p.variety.name %>
+        </td>
+        <td>
+          <%= p.price %>
+        </td>
+        <td>
+          <%= link_to 'Удалить', product_url(p), method: 'delete', :'data-confirm' => 'Действительно удалить?', rel: 'nofollow' %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+<% else %>
+  <!--Часть представления для покупателя-->
+  <table class="table table-striped">
+    <% @products.each do |p| %>
+      <tr class="info">
+        <td>
+          <%= p.name %>
+        </td>
+        <td>
+          <%= p.variety.type.name %>
+        </td>
+        <td>
+          <%= p.variety.name %>
+        </td>
+        <td>
+          <%= p.price %>
+        </td>
+        <td>
+          <%= button_to 'В корзину', line_items_path(product_id: p) %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>

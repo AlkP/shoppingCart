@@ -1,0 +1,30 @@
+<%= form_for @type do |f| %>
+  <div class="modal-header">
+    <% if @type.errors.any? %>
+      <div class="alert alert-error">
+        <h3>Ошибки при сохранении типа продукта</h3>
+        <ul>
+          <% for message in @type.errors.full_messages %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  </div>
+  <div class="modal-body">
+    <table class="table table-striped">
+      <tr class="success">
+        <td>
+          Имя
+        </td>
+        <td>
+          <%= f.text_field :name %>
+        </td>
+      </tr>
+    </table>
+    <div class="modal-footer">
+      <%= f.submit "Сохранить тип продукта"%>
+    </div>
+  </div>
+
+<%end%>
